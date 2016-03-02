@@ -3,3 +3,4 @@ dist/*
 init/*
 prometheus.egg-info/*
 .idea/
+*.pyc
