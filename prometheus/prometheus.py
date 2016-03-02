@@ -48,7 +48,7 @@ class Prometheus:
     def __get_image_name(self, image_suffix, tag="latest"):
         return self.docker_registry + "/projects/" + self.configuration.project_name + "/" + image_suffix + ":" + tag
 
-    def build_image(self, dockerfile, workspace, image_suffix, tag):
+    def build_image(self, dockerfile, workspace, image_suffix, tag, **kwargs):
         dockerfile = os.path.join(
             self.prometheus_path, dockerfile
         )

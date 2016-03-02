@@ -12,7 +12,7 @@ class TestConfigHandler(unittest.TestCase):
             release:
                 handler: build_image
                 image_suffix: release
-                docker_file: ./dockerfile
+                dockerfile: ./dockerfile
                 workspace: .
         '''
         configHandler = ConfigHandler(configuration)
@@ -24,7 +24,7 @@ class TestConfigHandler(unittest.TestCase):
             release:
                 handler: build_image
                 image_suffix: release
-                docker_file: ./dockerfile
+                dockerfile: ./dockerfile
                 workspace: .
         '''
         configHandler = ConfigHandler(configuration)
