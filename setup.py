@@ -15,6 +15,7 @@ setup(
         "console_scripts": ["prometheus = prometheus.prometheus:main"]
     },
     install_requires=[
-        "docker-py"
+        "docker-py",
+        "PyYAML"
     ]
 )
