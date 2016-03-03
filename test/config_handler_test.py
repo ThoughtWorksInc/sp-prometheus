@@ -10,7 +10,7 @@ class TestConfigHandler(unittest.TestCase):
         configuration = '''
         tasks:
             release:
-                handler: build_image
+                runner: build_image
                 image_suffix: release
                 dockerfile: ./dockerfile
                 workspace: .
@@ -22,13 +22,13 @@ class TestConfigHandler(unittest.TestCase):
         configuration = '''
         tasks:
             release:
-                handler: build_image
+                runner: build_image
                 image_suffix: release
                 dockerfile: ./dockerfile
                 workspace: .
         '''
         configHandler = ConfigHandler(configuration)
-        handler, params = configHandler.get_task("release")
+        taskRunner, params = configHandler.get_task("release")
 
-        self.assertEquals(handler, "build_image")
+        self.assertEquals(taskRunner, "build_image")
         self.assertTrue("image_suffix" in params)

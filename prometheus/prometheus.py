@@ -62,11 +62,11 @@ class Prometheus:
         pass
 
     def run(self, task):
-        handler, params = self.configuration.get_task(task)
-        if not hasattr(self, handler):
-            raise UnknownHandlerException(handler)
+        task_runner, params = self.configuration.get_task(task)
+        if not hasattr(self, task_runner):
+            raise UnknownHandlerException(task_runner)
 
-        getattr(self, handler)(**params)
+        getattr(self, task_runner)(**params)
 
 
 def main():
