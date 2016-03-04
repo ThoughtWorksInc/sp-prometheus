@@ -52,6 +52,7 @@ class Prometheus:
         return self.docker_registry + "/projects/" + self.configuration.project_name + "/" + image_suffix + ":" + tag
 
     def build_image(self, dockerfile, image_suffix, workspace= "", tag="latest", **kwargs):
+        print "start build image"
         dockerfile = os.path.join(
             self.prometheus_path, dockerfile
         )
@@ -62,6 +63,7 @@ class Prometheus:
         self._push_to_registry(image_name)
 
     def run_container(self, image, command, archive=None, **kwargs):
+        print "start run container"
         container = self.cli.create_container(image=image, command=command)
         try:
             self.cli.start(container.get("Id"))
