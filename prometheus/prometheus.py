@@ -67,7 +67,7 @@ class Prometheus:
         container = self.cli.create_container(image=image, command=command)
         try:
             self.cli.start(container.get("Id"))
-            for log in self.cli.logs(container.get("Id")):
+            for log in self.cli.logs(container.get("Id"), stream=True):
                 print log
             if archive:
                 strm, stat = self.cli.get_archive(container.get("Id"), archive["from"])
