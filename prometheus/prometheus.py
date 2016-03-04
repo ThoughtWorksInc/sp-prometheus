@@ -64,7 +64,8 @@ class Prometheus:
     def run_container(self, image, command, archive=None, **kwargs):
         container = self.cli.create_container(image=image, command=command)
         try:
-            for log in self.cli.start(container=container.get("Id")):
+            self.cli.start(container.get("Id"))
+            for log in self.cli.logs(container.get("Id")):
                 print log
             if archive:
                 strm, stat = self.cli.get_archive(container.get("Id"), archive["from"])
@@ -73,7 +74,7 @@ class Prometheus:
         except Exception as e:
             print e
         finally:
-            self.cli.remove_container(container=container.get("Id"))
+            self.cli.remove_container(container.get("Id"))
 
     def run(self, task):
         task_runner, params = self.configuration.get_task(task)
