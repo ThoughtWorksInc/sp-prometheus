@@ -1,6 +1,9 @@
 # coding: utf8
 import os
 import argparse
+import tarfile
+from io import BytesIO
+
 
 from docker import Client
 
@@ -58,8 +61,19 @@ class Prometheus:
         )
         self._push_to_registry(image_name)
 
-    def run_container(self, image, command, **kwargs):
-        container = self.create_container(image=image, command=command)
+    def run_container(self, image, command, archive=None, **kwargs):
+        container = self.cli.create_container(image=image, command=command)
+        try:
+            for log in self.cli.start(container=container.get("Id")):
+                print log
+            if archive:
+                strm, stat = self.cli.get_archive(container.get("Id"), archive["from"])
+                tar = tarfile.open(fileobj=BytesIO(strm.encode("utf-8")))
+                tar.extractall(archive["to"])
+        except Exception as e:
+            print e
+        finally:
+            self.cli.remove_container(container=container.get("Id"))
 
     def run(self, task):
         task_runner, params = self.configuration.get_task(task)
