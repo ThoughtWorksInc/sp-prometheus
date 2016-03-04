@@ -30,7 +30,7 @@ class Prometheus:
         )
         print "got prometheus path: " + self.prometheus_path
 
-        config_file = os.path.join(self.prometheus_path, "config")
+        config_file = os.path.join(self.prometheus_path, "config.yml")
         with open(config_file) as f:
             self.configuration = ConfigHandler(f.read())
 
