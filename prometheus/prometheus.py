@@ -62,17 +62,19 @@ class Prometheus:
         )
         self._push_to_registry(image_name)
 
-    def run_container(self, image, command, archive=None, **kwargs):
+    def run_container(self, image, command, archive=None, commit=None, **kwargs):
         print "start run container"
         container = self.cli.create_container(image=image, command=command)
         try:
             self.cli.start(container.get("Id"))
             for log in self.cli.logs(container.get("Id"), stream=True):
-                print "log type: ", type(log), log
+                print log.encode("utf8")
             if archive:
                 strm, stat = self.cli.get_archive(container.get("Id"), archive["from"])
                 tar = tarfile.open(fileobj=BytesIO(strm.encode("utf-8")))
                 tar.extractall(archive["to"])
+            if commit:
+                self.cli.commit(container.get("Id"), tag=self.__get_image_name(commit["image_suffix"]))
         except Exception as e:
             print "run container exception: ", e
         finally:
