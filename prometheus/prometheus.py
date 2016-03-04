@@ -43,7 +43,7 @@ class Prometheus:
             path=workspace,
             tag=image_name
         ):
-            print log
+            print "log type: ", type(log), log
 
     def _push_to_registry(self, image_name):
         print self.cli.push(image_name)
@@ -68,7 +68,7 @@ class Prometheus:
         try:
             self.cli.start(container.get("Id"))
             for log in self.cli.logs(container.get("Id"), stream=True):
-                print log
+                print "log type: ", type(log), log
             if archive:
                 strm, stat = self.cli.get_archive(container.get("Id"), archive["from"])
                 tar = tarfile.open(fileobj=BytesIO(strm.encode("utf-8")))
