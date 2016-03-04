@@ -45,21 +45,21 @@ class Prometheus:
     def _push_to_registry(self, image_name):
         print self.cli.push(image_name)
 
-    def __get_image_name(self, image_suffix, tag="latest"):
+    def __get_image_name(self, image_suffix, tag):
         return self.docker_registry + "/projects/" + self.configuration.project_name + "/" + image_suffix + ":" + tag
 
-    def build_image(self, dockerfile, workspace, image_suffix, tag, **kwargs):
+    def build_image(self, dockerfile, image_suffix, workspace= "", tag="latest", **kwargs):
         dockerfile = os.path.join(
             self.prometheus_path, dockerfile
         )
-        image_name = self.__get_image_name(dockerfile, image_suffix, tag)
+        image_name = self.__get_image_name(image_suffix, tag)
         self._build_image(
             dockerfile, os.path.join(self.workspace, workspace), image_name
         )
         self._push_to_registry(image_name)
 
     def run_container(self, image, command, **kwargs):
-        pass
+        container = self.create_container(image=image, command=command)
 
     def run(self, task):
         task_runner, params = self.configuration.get_task(task)

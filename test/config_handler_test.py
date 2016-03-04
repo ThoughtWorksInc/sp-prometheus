@@ -1,5 +1,4 @@
 # coding: utf8
-import os
 import unittest
 
 from prometheus.config_handler import ConfigHandler
