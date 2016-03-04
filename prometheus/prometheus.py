@@ -71,7 +71,7 @@ class Prometheus:
                 print log.encode("utf8")
             if archive:
                 strm, stat = self.cli.get_archive(container.get("Id"), archive["from"])
-                tar = tarfile.open(fileobj=strm)
+                tar = tarfile.open(fileobj=BytesIO(strm.read().encode("utf-8")))
                 tar.extractall(archive["to"])
             if commit:
                 self.cli.commit(container.get("Id"), tag=self.__get_image_name(commit["image_suffix"]))
