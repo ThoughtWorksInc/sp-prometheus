@@ -72,9 +72,9 @@ class Prometheus:
                 tar = tarfile.open(fileobj=BytesIO(strm.encode("utf-8")))
                 tar.extractall(archive["to"])
         except Exception as e:
-            print e
+            print "run container exception: ", e
         finally:
-            self.cli.remove_container(container.get("Id"))
+            self.cli.remove_container(container.get("Id"), force=True)
 
     def run(self, task):
         task_runner, params = self.configuration.get_task(task)
