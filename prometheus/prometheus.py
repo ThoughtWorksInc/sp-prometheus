@@ -43,7 +43,7 @@ class Prometheus:
             path=workspace,
             tag=image_name
         ):
-            print "log type: ", type(log), log
+            print log.encode("utf-8")
 
     def _push_to_registry(self, image_name):
         print self.cli.push(image_name)
