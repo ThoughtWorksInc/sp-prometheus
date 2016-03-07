@@ -59,7 +59,7 @@ class Prometheus:
         dockerfile = os.path.join(
             self.prometheus_path, dockerfile
         )
-        full_image_name = registry + "/" + image_name;
+        full_image_name = registry + "/" + image_name
         self._build_image(
             dockerfile, os.path.join(self.workspace, workspace), full_image_name
         )
