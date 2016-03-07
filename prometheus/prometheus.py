@@ -42,7 +42,8 @@ class Prometheus:
             dockerfile=dockerfile,
             path=workspace,
             tag=image_name,
-            rm=True
+            rm=True,
+            nocache=True
         ):
             print log.encode("utf-8")
 
