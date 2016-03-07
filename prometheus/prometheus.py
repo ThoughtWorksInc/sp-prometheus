@@ -38,14 +38,15 @@ class Prometheus:
             self.configuration = ConfigHandler(f.read())
 
     def _build_image(self, dockerfile, workspace, image_name):
-        for log in self.cli.build(
+        logGenerator = self.cli.build(
             dockerfile=dockerfile,
             path=workspace,
             tag=image_name,
             rm=True,
             nocache=True
-        ):
-            print log.encode("utf-8")
+        )
+        # for log in logGenerator:
+        #     print log.encode("utf-8")
 
     def _push_to_registry(self, image_name):
         print self.cli.push(image_name)
@@ -71,7 +72,7 @@ class Prometheus:
         try:
             self.cli.start(container.get("Id"))
             for log in self.cli.logs(container.get("Id"), stream=True):
-                print log.encode("utf8")
+                print log.encode("utf-8")
             if copy_out:
                 print "copy out files from: " + archive["from"]
                 strm, stat = self.cli.get_archive(container.get("Id"), archive["from"])
