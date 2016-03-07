@@ -51,28 +51,29 @@ class Prometheus:
         print self.cli.push(image_name)
 
     def __get_image_name(self, image_suffix, tag):
+
         return self.docker_registry + "/projects/" + self.configuration.project_name + "/" + image_suffix + ":" + tag
 
-    def build_image(self, dockerfile, image_suffix, workspace= "", tag="latest", **kwargs):
+    def docker_build_and_publish(self, dockerfile, image_name, registry, workspace= "", **kwargs):
         print "start build image"
         dockerfile = os.path.join(
             self.prometheus_path, dockerfile
         )
-        image_name = self.__get_image_name(image_suffix, tag)
+        full_image_name = registry + "/" + image_name;
         self._build_image(
-            dockerfile, os.path.join(self.workspace, workspace), image_name
+            dockerfile, os.path.join(self.workspace, workspace), full_image_name
         )
-        self._push_to_registry(image_name)
+        self._push_to_registry(full_image_name)
 
-    def run_container(self, image, command, archive=None, commit=None, **kwargs):
+    def docker_run(self, image, command, archive=None, commit=None, **kwargs):
         print "start run container"
         container = self.cli.create_container(image=image, command=command)
         try:
             self.cli.start(container.get("Id"))
             for log in self.cli.logs(container.get("Id"), stream=True):
                 print log.encode("utf8")
-            if archive:
-                print "archive files from: " + archive["from"]
+            if copy_out:
+                print "copy out files from: " + archive["from"]
                 strm, stat = self.cli.get_archive(container.get("Id"), archive["from"])
                 print stat
                 print "extract to: " + archive["to"]
