@@ -38,18 +38,20 @@ class Prometheus:
             self.configuration = ConfigHandler(f.read())
 
     def _build_image(self, dockerfile, workspace, image_name):
-        logGenerator = self.cli.build(
+        for response in self.cli.build(
             dockerfile=dockerfile,
             path=workspace,
             tag=image_name,
             rm=True,
-            nocache=True
-        )
-        # for log in logGenerator:
-        #     print log.encode("utf-8")
+            nocache=True,
+            decode=True
+        ):
+            if response.has_key('error'):
+                raise Exception("Error building docker image: {}".format(response['error']))
+            # print response.encode("utf-8")
 
     def _push_to_registry(self, image_name):
-        print self.cli.push(image_name)
+        print self.cli.push(image_name, insecure_registry=True)
 
     def __get_image_name(self, image_suffix, tag):
 
