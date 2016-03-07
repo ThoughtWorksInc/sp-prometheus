@@ -41,7 +41,8 @@ class Prometheus:
         for log in self.cli.build(
             dockerfile=dockerfile,
             path=workspace,
-            tag=image_name
+            tag=image_name,
+            rm=True
         ):
             print log.encode("utf-8")
 
