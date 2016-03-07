@@ -72,10 +72,14 @@ class Prometheus:
             for log in self.cli.logs(container.get("Id"), stream=True):
                 print log.encode("utf8")
             if archive:
+                print "archive files from: " + archive["from"]
                 strm, stat = self.cli.get_archive(container.get("Id"), archive["from"])
+                print stat
+                print "extract to: " + archive["to"]
                 tar = tarfile.open(fileobj=BytesIO(strm.read()))
                 tar.extractall(archive["to"])
             if commit:
+                print "commit container: " + self.__get_image_name(commit["image_suffix"])
                 self.cli.commit(container.get("Id"), tag=self.__get_image_name(commit["image_suffix"]))
         except Exception as e:
             print "run container exception: ", e
