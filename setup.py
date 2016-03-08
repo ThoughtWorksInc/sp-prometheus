@@ -10,7 +10,7 @@ setup(
     author="Liu Zhuo",
     author_email="zliu@thoughtworks.com",
     url="https://github.com/ThoughtWorksInc/prometheus",
-    packages=["prometheus"],
+    packages=["prometheus", "prometheus.docker", "prometheus.task"],
     entry_points={
         "console_scripts": ["prometheus = prometheus.prometheus:main"]
     },
