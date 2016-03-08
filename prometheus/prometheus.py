@@ -2,7 +2,7 @@
 import argparse
 import os
 
-from docker import Client
+# from docker import Client
 import sys
 
 from .config_handler import ConfigHandler
@@ -37,6 +37,7 @@ class TaskRunner:
 
     def run(self, task_name):
         task_runner, task_config = self.env.configuration.get_task(task_name)
+        print 'About to run task with config:', str(task_config)
 
         try:
             mod = __import__('prometheus.task.' + task_runner, fromlist='Task')
