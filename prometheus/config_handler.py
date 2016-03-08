@@ -23,7 +23,7 @@ class ConfigHandler:
         task = self.tasks.get(name)
         if task is None:
             raise NoSuchTaskException(name)
-        handler = task.get("runner")
-        if handler is None:
+        runner = task.get("runner")
+        if runner is None:
             raise NoHandlerException(name)
-        return handler, task
+        return runner, task
