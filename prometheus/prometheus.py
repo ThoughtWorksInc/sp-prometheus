@@ -4,9 +4,7 @@ import argparse
 import tarfile
 from io import BytesIO
 
-
 from docker import Client
-
 from .config_handler import ConfigHandler
 
 CONFIG_FILE_NAME = "config.yml"
@@ -78,12 +76,14 @@ class Prometheus:
             for log in self.cli.logs(container.get("Id"), stream=True):
                 print log.encode("utf-8")
             if copy_out:
-                print "copy out files from: " + archive["from"]
-                strm, stat = self.cli.get_archive(container.get("Id"), archive["from"])
+                copy_from = copy_out["from"]
+                print "copy out files from: " + copy_from
+                strm, stat = self.cli.get_archive(container.get("Id"), copy_from)
                 print stat
-                print "extract to: " + archive["to"]
+                copy_to = copy_out["to"]
+                print "extract to: " + copy_to
                 tar = tarfile.open(fileobj=BytesIO(strm.read()))
-                tar.extractall(archive["to"])
+                tar.extractall(copy_to)
             if commit:
                 print "commit container: " + self.__get_image_name(commit["image_suffix"])
                 self.cli.commit(container.get("Id"), tag=self.__get_image_name(commit["image_suffix"]))
