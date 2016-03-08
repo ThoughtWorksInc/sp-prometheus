@@ -2,7 +2,7 @@
 import argparse
 import os
 
-# from docker import Client
+from docker import Client
 import sys
 
 from .config_handler import ConfigHandler
