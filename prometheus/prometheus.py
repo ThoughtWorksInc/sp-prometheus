@@ -9,6 +9,8 @@ from docker import Client
 
 from .config_handler import ConfigHandler
 
+CONFIG_FILE_NAME = "config.yml"
+DEFAULT_CONFIG_DIR_NAME = "prometheus_ci"
 
 class UnknownHandlerException(Exception):
     def __init__(self, name):
@@ -29,11 +31,11 @@ class Prometheus:
         print "got workspace: " + os.environ.get("WORKSPACE", "")
         self.workspace = os.environ.get("WORKSPACE", "")
         self.prometheus_path = os.path.join(
-            self.workspace, prometheus_path if prometheus_path else "prometheus_ci"
+            self.workspace, prometheus_path if prometheus_path else DEFAULT_CONFIG_DIR_NAME
         )
         print "got prometheus path: " + self.prometheus_path
 
-        config_file = os.path.join(self.prometheus_path, "config.yml")
+        config_file = os.path.join(self.prometheus_path, CONFIG_FILE_NAME)
         with open(config_file) as f:
             self.configuration = ConfigHandler(f.read())
 
@@ -68,7 +70,7 @@ class Prometheus:
         )
         self._push_to_registry(full_image_name)
 
-    def docker_run(self, image, command, archive=None, commit=None, **kwargs):
+    def docker_run(self, image, command, archive=None, commit=None, copy_out=None, **kwargs):
         print "start run container"
         container = self.cli.create_container(image=image, command=command)
         try:
