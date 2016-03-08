@@ -82,7 +82,7 @@ def main():
     result = parser.parse_args()
 
     env = init_env(result.path)
-    print 'Script environment initialized: ' + env.__dict__
+    print 'Script environment initialized: ' + str(env.__dict__)
 
     runner = TaskRunner(env)
     runner.run(result.task)
