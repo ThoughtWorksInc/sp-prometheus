@@ -3,6 +3,8 @@ import argparse
 import os
 
 from docker import Client
+import sys
+
 from .config_handler import ConfigHandler
 
 CONFIG_FILE_NAME = "config.yml"
@@ -37,15 +39,24 @@ class TaskRunner:
         task_runner, task_config = self.env.configuration.get_task(task_name)
 
         try:
-            mod = __import__('prometheus.task.' + task_runner)
+            mod = __import__('prometheus.task.' + task_runner, fromlist='Task')
             cls = getattr(mod, 'Task')
             task = cls(self.env)
-            return getattr(task, 'run')(**task_config)
+            run_method = getattr(task, 'run')
+            return self._invoke_run_method(run_method, task_config)
         except ImportError:
             raise UnknownTaskException(task_runner)
         except AttributeError:
             raise IllegalTaskModuleException(
                 'Module does not contain Task class: ' + 'prometheus.task.' + task_runner + '_runner')
+
+    @staticmethod
+    def _invoke_run_method(run_method, task_config):
+        try:
+            return run_method(**task_config)
+        except:
+            print 'failed to invoke run method', sys.exc_info()[0]
+            raise
 
 
 def init_env(prometheus_path=None,
