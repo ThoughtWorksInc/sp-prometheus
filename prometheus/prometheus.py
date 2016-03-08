@@ -44,7 +44,7 @@ class TaskRunner:
             cls = getattr(mod, 'Task')
             task = cls(self.env)
             run_method = getattr(task, 'run')
-            return self._invoke_run_method(run_method, task_config)
+            return self.__invoke_run_method(run_method, task_config)
         except ImportError:
             raise UnknownTaskException(task_runner)
         except AttributeError:
@@ -52,7 +52,7 @@ class TaskRunner:
                 'Module does not contain Task class: ' + 'prometheus.task.' + task_runner + '_runner')
 
     @staticmethod
-    def _invoke_run_method(run_method, task_config):
+    def __invoke_run_method(run_method, task_config):
         try:
             return run_method(**task_config)
         except:
