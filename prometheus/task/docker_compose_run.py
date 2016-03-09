@@ -12,7 +12,7 @@ class Task:
         print "start run docker-compose: " + yaml_file
         out, err = Popen(
             ["docker-compose", "-f", yaml_file, "up", "—abort-on-container-exit"],
-            stdout=PIPE, stdin=PIPE, stderr=PIPE, shell=True
+            stdout=PIPE, stdin=PIPE, stderr=PIPE
         ).communicate()
         print out
         if err:
@@ -20,14 +20,14 @@ class Task:
             raise RuntimeError(err)
         print "collect docker-compose resource"
         out, err = Popen(
-            ["docker-compose", "-f", yaml_file, "up"], stdout=PIPE, stdin=PIPE, stderr=PIPE, shell=True
+            ["docker-compose", "-f", yaml_file, "up"], stdout=PIPE, stdin=PIPE, stderr=PIPE
         ).communicate()
         print out
         if err:
             print "error: " + err
             raise RuntimeError(err)
         out, err = Popen(
-            ["docker-compose", "-f", yaml_file, "rm", "-f"], stdout=PIPE, stdin=PIPE, stderr=PIPE, shell=True
+            ["docker-compose", "-f", yaml_file, "rm", "-f"], stdout=PIPE, stdin=PIPE, stderr=PIPE
         ).communicate()
         print out
         if err:
