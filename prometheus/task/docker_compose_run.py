@@ -1,6 +1,6 @@
 # coding: utf8
 import os.path
-from subprocess import call
+from subprocess import Popen, PIPE
 
 
 class Task:
@@ -10,7 +10,21 @@ class Task:
     def run(self, compose_file, **kwargs):
         yaml_file = os.path.join(self.env.prometheus_path, compose_file)
         print "start run docker-compose: " + yaml_file
-        call(["docker-compose", "-f", yaml_file, "up"])
+        out, err = Popen(["docker-compose", "-f", yaml_file, "up"], stdout=PIPE, stdin=PIPE, stderr=PIPE).communicate()
+        print out
+        if err:
+            print "error: " + err
+            raise RuntimeError(err)
         print "collect docker-compose resource"
-        call(["docker-compose", "-f", yaml_file, "up"])
-        call(["docker-compose", "-f", yaml_file, "rm", "-f"])
+        out, err = Popen(["docker-compose", "-f", yaml_file, "up"], stdout=PIPE, stdin=PIPE, stderr=PIPE).communicate()
+        print out
+        if err:
+            print "error: " + err
+            raise RuntimeError(err)
+        out, err = Popen(
+            ["docker-compose", "-f", yaml_file, "rm", "-f"], stdout=PIPE, stdin=PIPE, stderr=PIPE
+        ).communicate()
+        print out
+        if err:
+            print "error: " + err
+            raise RuntimeError(err)
