@@ -10,7 +10,7 @@ class Task:
     def run(self, compose_file, **kwargs):
         yaml_file = os.path.join(self.env.prometheus_path, compose_file)
         print "start run docker-compose: " + yaml_file
-        res = call(["docker-compose", "-f", yaml_file, "up", "—abort-on-container-exit"])
+        res = call(["docker-compose", "-f", yaml_file, "up", "--abort-on-container-exit"])
         if res:
             raise RuntimeError()
         print "collect docker-compose resource"
