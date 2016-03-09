@@ -7,7 +7,7 @@ class Task:
     def __init__(self, env):
         self.env = env
 
-    def docker_compose_run(self, compose_file, **kwargs):
+    def run(self, compose_file, **kwargs):
         yaml_file = os.path.join(self.env.prometheus_path, compose_file)
         print "start run docker-compose: " + yaml_file
         call(["docker-compose", "-f", yaml_file, "up"])
