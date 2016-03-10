@@ -15,7 +15,7 @@ class Task:
             raise RuntimeError()
         print "collect docker-compose resource"
         out, err = Popen(
-            ["docker-compose", "-f", yaml_file, "up"], stdout=PIPE, stdin=PIPE, stderr=PIPE
+            ["docker-compose", "-f", yaml_file, "stop"], stdout=PIPE, stdin=PIPE, stderr=PIPE
         ).communicate()
         print out
         if err:
