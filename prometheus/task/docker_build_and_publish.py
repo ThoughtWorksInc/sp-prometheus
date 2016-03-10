@@ -28,6 +28,8 @@ class Task:
             if response.has_key('error'):
                 raise Exception("Error building docker image: {}".format(response['error']))
                 # print response.encode("utf-8")
+            else:
+                print response
 
     def __push_to_registry(self, image_name, insecure_registry=True):
         log = self.env.cli.push(image_name, insecure_registry=insecure_registry)
