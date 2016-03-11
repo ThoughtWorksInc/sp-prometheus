@@ -18,6 +18,6 @@ class Task:
             ["docker-compose", "-f", yaml_file, "rm", "-f"], stdout=PIPE, stdin=PIPE, stderr=PIPE
         ).communicate()
         print out
-        if err:
-            print "error: " + err
-            raise RuntimeError(err)
+        # if err:
+        #     print "error: " + err
+        #     raise RuntimeError(err)
