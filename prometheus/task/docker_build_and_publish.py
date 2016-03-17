@@ -21,7 +21,6 @@ class Task:
                 dockerfile=dockerfile,
                 path=workspace,
                 tag=image_name,
-                rm=True,
                 forcerm=True,
                 nocache=True,
                 decode=True
