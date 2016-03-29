@@ -2,7 +2,7 @@
 
 from setuptools import setup
 
-##
+#
 setup(
     name="prometheus",
     version="0.1",
