@@ -60,15 +60,14 @@ class TaskRunner:
             raise
 
 
-def init_env(prometheus_path=None,
-             docker_host=None):
-    docker_host = docker_host or os.environ.get("DOCKER_HOST")
+def init_env(prometheus_path=None):
+    docker_host = os.environ.get("DOCKER_HOST") or "tcp://172.17.0.1:2375"
 
     cli = Client(base_url=docker_host)
 
     docker_registry = os.environ.get("DOCKER_REGISTRY", "")
 
-    workspace = os.environ.get("WORKSPACE", "")
+    workspace = os.getcwd()
     prometheus_path = os.path.join(
         workspace, prometheus_path if prometheus_path else DEFAULT_CONFIG_DIR_NAME
     )
