@@ -1,0 +1,17 @@
+resources:
+    - name: prometheus
+      type: git
+      source:
+        uri: git@github.com:ThoughtWorksInc/sp-prometheus.git
+        branch: master
+        private_key: {{private_key}}
+
+jobs:
+    - name: build-prometheus-image
+      public: true
+      plan:
+        - get: prometheus
+          trigger: true
+        - task: build
+          file: prometheus/concourse_ci/build.yml
+

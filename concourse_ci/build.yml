@@ -1,0 +1,8 @@
+platform: linux
+image: docker:///docker
+
+inputs:
+    - name: prometheus
+run:
+    path: docker
+    args: ["-t", "prometheus", "-f", "prometheus/docker/Dockerfile", "sp-prometheus"]
