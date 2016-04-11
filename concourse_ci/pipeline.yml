@@ -5,6 +5,11 @@ resources:
         uri: git@github.com:ThoughtWorksInc/sp-prometheus.git
         branch: master
         private_key: {{private_key}}
+    - name: registry
+      type: docker-image
+      source:
+        repository: 10.202.128.51/projects/prometheus
+        insecure_registries: [10.202.128.51]
 
 jobs:
     - name: build-prometheus-image
@@ -12,6 +17,9 @@ jobs:
       plan:
         - get: prometheus
           trigger: true
-        - task: build
-          file: prometheus/concourse_ci/build.yml
+        - put: registry
+          params:
+            build: prometheus
+            dockerfile: prometheus/docker/Dockerfile
+
 
