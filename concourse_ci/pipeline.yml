@@ -8,8 +8,8 @@ resources:
     - name: registry
       type: docker-image
       source:
-        repository: 10.202.128.51/projects/prometheus
-        insecure_registries: [10.202.128.51]
+        repository: 10.202.128.50/projects/prometheus
+        insecure_registries: [10.202.128.50]
 
 jobs:
     - name: build-prometheus-image
