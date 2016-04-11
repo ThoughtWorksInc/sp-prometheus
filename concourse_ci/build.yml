@@ -5,4 +5,4 @@ inputs:
     - name: prometheus
 run:
     path: docker
-    args: ["build", "-t", "prometheus", "-f", "prometheus/docker/Dockerfile", "sp-prometheus"]
+    args: ["build", "-t", "prometheus", "-f", "prometheus/docker/Dockerfile", "prometheus"]
