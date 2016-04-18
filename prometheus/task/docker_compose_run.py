@@ -14,14 +14,11 @@ class Task:
         if err:
             raise RuntimeError()
         print "collect docker-compose resource"
-        try:
-            out, err = Popen(
-                ["DOCKER_HOST="+self.env.docker_host, "docker-compose", "-f", yaml_file, "rm", "-f"],
-                stdout=PIPE, stdin=PIPE, stderr=PIPE
-            ).communicate()
-            print out
-        except Exception as e:
-            print "error", e
+        out, err = Popen(
+            ["docker-compose", "-f", yaml_file, "rm", "-f"],
+            stdout=PIPE, stdin=PIPE, stderr=PIPE
+        ).communicate()
+        print out
         # if err:
         #     print "error: " + err
         #     raise RuntimeError(err)
