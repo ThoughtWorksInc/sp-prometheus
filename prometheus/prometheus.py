@@ -8,6 +8,7 @@ import sys
 from .config_handler import ConfigHandler
 
 CONFIG_FILE_NAME = "config.yml"
+ENVIRONMENT_FILE_NAME = "environment.yml"
 DEFAULT_CONFIG_DIR_NAME = "prometheus_ci"
 
 
@@ -73,8 +74,13 @@ def init_env(prometheus_path=None):
     )
 
     config_file = os.path.join(prometheus_path, CONFIG_FILE_NAME)
+    environment_file = os.path.join(prometheus_path, ENVIRONMENT_FILE_NAME)
+    try:
+        environments = open(environment_file, "r").read()
+    except FileNotFoundError:
+        environments = None
     with open(config_file) as f:
-        configuration = ConfigHandler(f.read())
+        configuration = ConfigHandler(f.read(), environments)
 
     return TaskEnv(
         cli=cli,

@@ -1,5 +1,7 @@
 # coding: utf8
 
+import re
+
 import yaml
 
 
@@ -14,10 +16,24 @@ class NoHandlerException(Exception):
 
 
 class ConfigHandler:
-    def __init__(self, configuration):
+    TEMPLATE = re.compile(r"{{( )*(?P<key>\w+)( )*}}")
+    def __init__(self, configuration, environments):
+        if environments:
+            configuration = self.inflate_environments(configuration, environments)
+
         self.configuration = yaml.load(configuration)
         for key, value in self.configuration.items():
             setattr(self, key, value)
+
+    def inflate_environments(self, configuration, environments):
+        mapping = yaml.load(environments)
+
+        def inflate(matchobj):
+            value = mapping.get(matchobj.group("key"))
+            assert value, "miss environment: " + matchobj.group()
+            return value
+
+        return self.TEMPLATE.sub(inflate, configuration)
 
     def get_task(self, name):
         task = self.tasks.get(name)
