@@ -77,7 +77,7 @@ def init_env(prometheus_path=None):
     environment_file = os.path.join(prometheus_path, ENVIRONMENT_FILE_NAME)
     try:
         environments = open(environment_file, "r").read()
-    except FileNotFoundError:
+    except Exception:
         environments = None
     with open(config_file) as f:
         configuration = ConfigHandler(f.read(), environments)
