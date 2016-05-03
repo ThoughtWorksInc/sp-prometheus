@@ -17,14 +17,14 @@ class Task:
         out, err = Popen(["docker-compose", "-f", yaml_file, "up", "--abort-on-container-exit"]).communicate()
         if err:
             raise RuntimeError()
+        if copy_out:
+            export_file(self.env.cli, copy_out["container_name"], copy_out["from"], copy_out["to"])
         print "collect docker-compose resource"
         out, err = Popen(
             ["docker-compose", "-f", yaml_file, "rm", "-f"],
             stdout=PIPE, stdin=PIPE, stderr=PIPE
         ).communicate()
         del os.environ["DOCKER_HOST"]
-        if copy_out:
-            export_file(self.env.cli, copy_out["container_name"], copy_out["from"], copy_out["to"])
         print out
         # if err:
         #     print "error: " + err
