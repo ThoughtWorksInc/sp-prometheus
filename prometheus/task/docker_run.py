@@ -1,6 +1,6 @@
 # coding: utf8
-import tarfile
-from io import BytesIO
+
+from .base import export_file
 
 
 class Task:
@@ -15,14 +15,7 @@ class Task:
             for log in self.env.cli.logs(container.get("Id"), stream=True):
                 print log.encode("utf-8")
             if copy_out:
-                copy_from = copy_out["from"]
-                print "copy out files from: " + copy_from
-                strm, stat = self.env.cli.get_archive(container.get("Id"), copy_from)
-                print stat
-                copy_to = copy_out["to"]
-                print "extract to: " + copy_to
-                tar = tarfile.open(fileobj=BytesIO(strm.read()))
-                tar.extractall(copy_to)
+                export_file(self.env.cli, container.get("Id"), copy_out["from"], copy_out["to"])
         except Exception as e:
             print "run container exception: ", e
         finally:

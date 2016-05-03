@@ -1,13 +1,16 @@
 # coding: utf8
+
 import os
 from subprocess import call, PIPE, Popen
+
+from .base import export_file
 
 
 class Task:
     def __init__(self, env):
         self.env = env
 
-    def run(self, compose_file, **kwargs):
+    def run(self, compose_file, copy_out=None, **kwargs):
         yaml_file = os.path.join(self.env.prometheus_path, compose_file)
         print "start run docker-compose: " + yaml_file
         os.environ["DOCKER_HOST"] = self.env.docker_host
@@ -20,6 +23,8 @@ class Task:
             stdout=PIPE, stdin=PIPE, stderr=PIPE
         ).communicate()
         del os.environ["DOCKER_HOST"]
+        if copy_out:
+            export_file(self.env.cli, copy_out["container_name"], copy_out["from"], copy_out["to"])
         print out
         # if err:
         #     print "error: " + err
